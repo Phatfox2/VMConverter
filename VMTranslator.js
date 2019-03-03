@@ -44,74 +44,57 @@ for (var i in lines) {
             writeBuf(writeFD, 'M=M+1');
             
         }
-        if (splitline[1] == 'local') {
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, '@LCL');
-            writeBuf(writeFD, 'D=D+M');
-            writeBuf(writeFD, 'A=D');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M+1');   
-        }
-        if (splitline[1] == 'argument') {
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, '@ARG');
-            writeBuf(writeFD, 'D=D+M');
-            writeBuf(writeFD, 'A=D');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M+1'); 
-        }
-        if (splitline[1] == 'this') {
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, '@THIS');
-            writeBuf(writeFD, 'D=D+M');
-            writeBuf(writeFD, 'A=D');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M+1'); 
-        }
-        if (splitline[1] == 'that') {
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, '@THAT');
-            writeBuf(writeFD, 'D=D+M');
-            writeBuf(writeFD, 'A=D');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M+1'); 
-        }
-        if (splitline[1] == 'temp') {
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, '@R5');
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, 'A=D');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M+1'); 
-        }
-        if (splitline[1] == 'pointer') {
-            if (splitline[2] == '0') {
-                writeBuf(writeFD, '@THIS');
+        if (splitline[1] != 'pointer') {
+            if (splitline[1] != 'static' && splitline[1] != 'temp') {
+                if (splitline[1] != 'constant') {
+                    writeBuf(writeFD, thingy);
+                    writeBuf(writeFD, 'D=A');
+                    if (splitline[1] == 'local') {
+                        writeBuf(writeFD, '@LCL');
+                    }
+                    if (splitline[1] == 'argument') {
+                        writeBuf(writeFD, '@ARG');
+                    }
+                    if (splitline[1] == 'this') {
+                        writeBuf(writeFD, '@THIS');
+                    }
+                    if (splitline[1] == 'that') {
+                        writeBuf(writeFD, '@THAT');
+                    }
+                    writeBuf(writeFD, 'D=D+M');
+                    writeBuf(writeFD, 'A=D');
+                    writeBuf(writeFD, 'D=M');
+                    writeBuf(writeFD, '@SP');
+                    writeBuf(writeFD, 'A=M');
+                    writeBuf(writeFD, 'M=D');
+                    writeBuf(writeFD, '@SP');
+                    writeBuf(writeFD, 'M=M+1'); 
+                    }
+                } else {
+                    writeBuf(writeFD, thingy);
+                    writeBuf(writeFD, 'D=A');
+                    if (splitline[1] == 'temp') {
+                        writeBuf(writeFD, '@R5');
+                    }
+                    if (splitline[1] == 'static') {
+                        writeBuf(writeFD, '@16');
+                    }
+                    writeBuf(writeFD, 'D=D+A');
+                    writeBuf(writeFD, 'A=D');
+                    writeBuf(writeFD, 'D=M');
+                    writeBuf(writeFD, '@SP');
+                    writeBuf(writeFD, 'A=M');
+                    writeBuf(writeFD, 'M=D');
+                    writeBuf(writeFD, '@SP');
+                    writeBuf(writeFD, 'M=M+1'); 
+                }
+            } else {
+                if (splitline[2] == '0') {
+                    writeBuf(writeFD, '@THIS');
+                }
+                if (splitline[2] == '1') {
+                    writeBuf(writeFD, '@THAT');
+                }
                 writeBuf(writeFD, 'D=M');
                 writeBuf(writeFD, '@SP');
                 writeBuf(writeFD, 'A=M');
@@ -119,141 +102,58 @@ for (var i in lines) {
                 writeBuf(writeFD, '@SP');
                 writeBuf(writeFD, 'M=M+1');
             }
-            if (splitline[2] == '1') {
-                writeBuf(writeFD, '@THAT');
-                writeBuf(writeFD, 'D=M');
-                writeBuf(writeFD, '@SP');
-                writeBuf(writeFD, 'A=M');
-                writeBuf(writeFD, 'M=D');
-                writeBuf(writeFD, '@SP');
-                writeBuf(writeFD, 'M=M+1');
-            }
-        }
-        if (splitline[1] == 'static') {
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, '@16');
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, 'A=D');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M+1'); 
-        } 
     }
     if (splitline[0] == 'pop') {
-        if (splitline[1] == 'local') {
-            writeBuf(writeFD, '@LCL');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M-1');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-        }
-        if (splitline[1] == 'argument') {
-            writeBuf(writeFD, '@ARG');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M-1');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-        }
-        if (splitline[1] == 'this') {
-            writeBuf(writeFD, '@THIS');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M-1');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-        }
-        if (splitline[1] == 'that') {
-            writeBuf(writeFD, '@THAT');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M-1');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-        }
-        if (splitline[1] == 'temp') {
-            writeBuf(writeFD, '@R5');
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M-1');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'M=D');
-        }
-        if (splitline[1] == 'pointer') {
-            if (splitline[2] == '0') {
-                writeBuf(writeFD, '@SP');
-                writeBuf(writeFD, 'M=M-1');
-                writeBuf(writeFD, 'A=M');
-                writeBuf(writeFD, 'D=M');
+        if (splitline[1] != 'pointer') {
+            if (splitline[1] == 'local') {
+                writeBuf(writeFD, '@LCL');
+            }
+            if (splitline[1] == 'argument') {
+                writeBuf(writeFD, '@ARG');
+            }
+            if (splitline[1] == 'this') {
                 writeBuf(writeFD, '@THIS');
-                writeBuf(writeFD, 'M=D');
+            }
+            if (splitline[1] == 'that') {
+                writeBuf(writeFD, '@THAT');
+            }
+            if (splitline[1] == 'temp') {
+                writeBuf(writeFD, '@R5');
+                writeBuf(writeFD, 'D=A');
+            }
+            if (splitline[1] == 'static') {
+                writeBuf(writeFD, '@16');
+                writeBuf(writeFD, 'D=A');
+            }
+            if (splitline[1] != 'temp' && splitline[1] != 'static') {
+                writeBuf(writeFD, 'D=M');
+            }
+            writeBuf(writeFD, thingy);
+            writeBuf(writeFD, 'D=D+A');
+            writeBuf(writeFD, '@R13');
+            writeBuf(writeFD, 'M=D');
+            writeBuf(writeFD, '@SP');
+            writeBuf(writeFD, 'M=M-1');
+            writeBuf(writeFD, 'A=M');
+            writeBuf(writeFD, 'D=M');
+            writeBuf(writeFD, '@R13');
+            writeBuf(writeFD, 'A=M');
+            writeBuf(writeFD, 'M=D');     
+        } else {
+            writeBuf(writeFD, '@SP');
+            writeBuf(writeFD, 'M=M-1');
+            writeBuf(writeFD, 'A=M');
+            writeBuf(writeFD, 'D=M');
+            if (splitline[2] == '0') {
+                writeBuf(writeFD, '@THIS');
             }
             if (splitline[2] == '1') {
-                writeBuf(writeFD, '@SP');
-                writeBuf(writeFD, 'M=M-1');
-                writeBuf(writeFD, 'A=M');
-                writeBuf(writeFD, 'D=M');
                 writeBuf(writeFD, '@THAT');
-                writeBuf(writeFD, 'M=D');
             }
-        }
-        if (splitline[1] == 'static') {
-            writeBuf(writeFD, '@16');
-            writeBuf(writeFD, 'D=A');
-            writeBuf(writeFD, thingy);
-            writeBuf(writeFD, 'D=D+A');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'M=D');
-            writeBuf(writeFD, '@SP');
-            writeBuf(writeFD, 'M=M-1');
-            writeBuf(writeFD, 'A=M');
-            writeBuf(writeFD, 'D=M');
-            writeBuf(writeFD, '@R13');
-            writeBuf(writeFD, 'A=M');
             writeBuf(writeFD, 'M=D');
         }
     }
-    if (splitline[0] == 'add') {
+    if (splitline[0] == 'add' || splitline[0] == 'sub' || splitline[0] == 'and' || splitline[0] == 'or') {
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M-1');
         writeBuf(writeFD, 'A=M');
@@ -261,34 +161,37 @@ for (var i in lines) {
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M-1');
         writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=D+M');
+        if (splitline[0] == 'add') {
+            writeBuf(writeFD, 'D=D+M');
+        }
+        if (splitline[0] == 'sub') {
+            writeBuf(writeFD, 'D=M-D');
+        }
+        if (splitline[0] == 'and') {
+            writeBuf(writeFD, 'D=D&M');
+        }
+        if (splitline[0] == 'or') {
+            writeBuf(writeFD, 'D=D|M');
+        }
         writeBuf(writeFD, 'M=D');
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M+1');
-    }
-    if (splitline[0] == 'sub') {
+    } 
+    if (splitline[0] == 'neg' || splitline[0] == 'not') {
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M-1');
         writeBuf(writeFD, 'A=M');
         writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M-D');
-        writeBuf(writeFD, 'M=D');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M+1');
-    }
-    if (splitline[0] == 'neg') {
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, 'M=-D')
+        if (splitline[0] == 'neg') {
+            writeBuf(writeFD, 'M=-D')
+        }
+        if (splitline[0] == 'not') {
+            writeBuf(writeFD, 'M=!D');
+        }
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M+1');
     }
-    if (splitline[0] == 'eq') {
+    if (splitline[0] == 'eq' || splitline[0] == 'gt' || splitline[0] == 'lt') {
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M-1');
         writeBuf(writeFD, 'A=M');
@@ -299,7 +202,15 @@ for (var i in lines) {
         writeBuf(writeFD, 'D=M-D');
         var value1 = updateLabelNumber();
         writeBuf(writeFD, '@'.concat(value1));
-        writeBuf(writeFD, 'D;JEQ');
+        if (splitline[0] == 'eq') {
+            writeBuf(writeFD, 'D;JEQ');
+        }
+        if (splitline[0] == 'gt') {
+            writeBuf(writeFD, 'D;JGT');
+        }
+        if (splitline[0] == 'lt') {
+            writeBuf(writeFD, 'D;JLT');
+        }
         writeBuf(writeFD, 'D=0');
         var value2 = updateLabelNumber();
         writeBuf(writeFD, '@'.concat(value2));
@@ -313,89 +224,4 @@ for (var i in lines) {
         writeBuf(writeFD, '@SP');
         writeBuf(writeFD, 'M=M+1');
     }
-    if (splitline[0] == 'gt') {
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M-D');
-        var value1 = updateLabelNumber();
-        writeBuf(writeFD, '@'.concat(value1));
-        writeBuf(writeFD, 'D;JGT');
-        writeBuf(writeFD, 'D=0');
-        var value2 = updateLabelNumber();
-        writeBuf(writeFD, '@'.concat(value2));
-        writeBuf(writeFD, '0;JMP');
-        writeBuf(writeFD, '('.concat(value1, ')'));
-        writeBuf(writeFD, 'D=-1');
-        writeBuf(writeFD, '('.concat(value2, ')'));
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'M=D');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M+1');
-    }
-    if (splitline[0] == 'lt') {
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M-D');
-        var value1 = updateLabelNumber();
-        writeBuf(writeFD, '@'.concat(value1));
-        writeBuf(writeFD, 'D;JLT');
-        writeBuf(writeFD, 'D=0');
-        var value2 = updateLabelNumber();
-        writeBuf(writeFD, '@'.concat(value2));
-        writeBuf(writeFD, '0;JMP');
-        writeBuf(writeFD, '('.concat(value1, ')'));
-        writeBuf(writeFD, 'D=-1');
-        writeBuf(writeFD, '('.concat(value2, ')'));
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'M=D');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M+1');
-    }
-    if (splitline[0] == 'and') {
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'M=D&M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M+1');
-    }
-    if (splitline[0] == 'or') {
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'M=D|M');
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M+1');
-    }
-    if (splitline[0] == 'not') {
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M-1');
-        writeBuf(writeFD, 'A=M');
-        writeBuf(writeFD, 'D=M');
-        writeBuf(writeFD, 'M=!D')
-        writeBuf(writeFD, '@SP');
-        writeBuf(writeFD, 'M=M+1'); 
-    }
-    
-
 } 
